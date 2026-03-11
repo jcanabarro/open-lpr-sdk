@@ -24,3 +24,6 @@ Makefile
 # IDE
 .vscode/
 .idea/
+
+# Android SDK
+.gradle
