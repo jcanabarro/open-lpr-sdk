@@ -40,7 +40,7 @@ file(MAKE_DIRECTORY ${MODELS_DIR})
 
 set(EMBED_SCRIPT "${CMAKE_SOURCE_DIR}/embed_model.py")
 
-foreach(MODEL whoami.onnx cct_xs_v1_global.onnx)
+foreach(MODEL best.onnx cct_xs_v1_global.onnx)
     string(REPLACE "." "_" MODEL_VAR ${MODEL})
     string(REPLACE "-" "_" MODEL_VAR ${MODEL_VAR})
     set(MODEL_SRC "${CMAKE_SOURCE_DIR}/${MODEL}")
@@ -93,7 +93,7 @@ target_include_directories(lpr_static PUBLIC ${LPR_INCLUDES})
 target_link_libraries(lpr_static PRIVATE ${LPR_LIBS})
 
 # ── Test binary ───────────────────────────────────────────────────────────────
-add_executable(lpr_test tests/test.cpp)
-add_dependencies(lpr_test embedded_models)
-target_include_directories(lpr_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(lpr_test PRIVATE lpr_shared ${OpenCV_LIBS})
+add_executable(lpr_run tests/test.cpp)
+add_dependencies(lpr_run embedded_models)
+target_include_directories(lpr_run PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(lpr_run PRIVATE lpr_shared ${OpenCV_LIBS})
