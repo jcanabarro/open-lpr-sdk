@@ -11,7 +11,7 @@ hf_hub_download(
 
 # downloaded from https://huggingface.co/wh0am-i/yolov11x-BrPlate
 detector_model = YOLO("best.pt")
-detector_model.export(format="onnx", opset=21)
+detector_model.export(format="onnx", opset=21, simplify=True)
 
 recognizer = LicensePlateRecognizer("cct-xs-v1-global-model")
 ocr_model = recognizer.model
