@@ -79,23 +79,7 @@ add_library(lpr_shared SHARED ${LPR_SOURCES})
 add_dependencies(lpr_shared embedded_models)
 set_target_properties(lpr_shared PROPERTIES OUTPUT_NAME "lpr")
 target_include_directories(lpr_shared PUBLIC ${LPR_INCLUDES})
-
-if(APPLE)
-    target_link_libraries(lpr_shared PRIVATE
-        ${OpenCV_LIBS}
-        ${ORT_SHARED_LIB}
-    )
-else()
-    target_link_libraries(lpr_shared PRIVATE
-        -Wl,--whole-archive
-        opencv_dnn opencv_imgproc opencv_core
-        -Wl,--no-whole-archive
-        ${ORT_SHARED_LIB}
-        -static-libgcc
-        -static-libstdc++
-    )
-endif()
-
+target_link_libraries(lpr_shared PRIVATE ${LPR_LIBS})
 set_target_properties(lpr_shared PROPERTIES
     BUILD_RPATH   "${ORT_LIB}"
     INSTALL_RPATH "${ORT_LIB}"

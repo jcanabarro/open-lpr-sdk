@@ -21,38 +21,13 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake wget build-essential python3-dev \
-            pkg-config libgtk2.0-dev
-
-      - name: Build OpenCV 4.6 static
-        run: |
-          wget -q https://github.com/opencv/opencv/archive/4.6.0.tar.gz
-          tar -xzf 4.6.0.tar.gz
-          cd opencv-4.6.0 && mkdir build && cd build
-          cmake .. \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DBUILD_SHARED_LIBS=OFF \
-            -DBUILD_TESTS=OFF \
-            -DBUILD_PERF_TESTS=OFF \
-            -DBUILD_EXAMPLES=OFF \
-            -DWITH_GTK=OFF \
-            -DWITH_FFMPEG=OFF \
-            -DWITH_1394=OFF \
-            -DWITH_GSTREAMER=OFF \
-            -DWITH_LAPACK=OFF \
-            -DWITH_PROTOBUF=ON \
-            -DBUILD_PROTOBUF=ON \
-            -DBUILD_LIST=core,imgproc,dnn \
-            -DCMAKE_INSTALL_PREFIX=/opt/opencv46
-          make -j$(nproc)
-          sudo make install
-          echo "OpenCV_DIR=/opt/opencv46/lib/cmake/opencv4" >> $GITHUB_ENV
+          sudo apt-get install -y cmake libopencv-dev wget
 
       - name: Install ONNX Runtime
         run: |
-          wget -q https://github.com/microsoft/onnxruntime/releases/download/v1.18.0/onnxruntime-linux-x64-1.18.0.tgz
-          sudo tar -xzf onnxruntime-linux-x64-1.18.0.tgz -C /opt/
-          echo "ONNXRUNTIME_ROOT=/opt/onnxruntime-linux-x64-1.18.0" >> $GITHUB_ENV
+          wget -q https://github.com/microsoft/onnxruntime/releases/download/v1.20.1/onnxruntime-linux-x64-1.20.1.tgz
+          sudo tar -xzf onnxruntime-linux-x64-1.20.1.tgz -C /opt/
+          echo "ONNXRUNTIME_ROOT=/opt/onnxruntime-linux-x64-1.20.1" >> $GITHUB_ENV
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -69,7 +44,7 @@ jobs:
       - name: Build
         run: |
           mkdir build && cd build
-          cmake .. -DONNXRUNTIME_ROOT=${{ env.ONNXRUNTIME_ROOT }} -DOpenCV_DIR=${{ env.OpenCV_DIR }}
+          cmake .. -DONNXRUNTIME_ROOT=${{ env.ONNXRUNTIME_ROOT }}
           make -j$(nproc)
 
       - name: Create GitHub Release
